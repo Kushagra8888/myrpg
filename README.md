@@ -1,7 +1,7 @@
 # A Simple RPG game
 
 A simplistic exploration based command line RPG game where
-players explored grid map, fight battles and gain experience
+players explore a grid like map, fight battles and gain experience
 
 ## Requirements
 
