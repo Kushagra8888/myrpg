@@ -13,3 +13,6 @@ class mapCell:
 
     def is_explored(self):
         return self.explored
+
+    def explore(self):
+        self.explored = True

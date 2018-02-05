@@ -21,6 +21,14 @@ class mapArea:
             self.grid.append([])
             for col_idx in range(self.rows):
                 self.grid[row_idx].append(mapCell(row_idx, col_idx, enemy=False, explored=False))
+        self.explore_cell(initial_pos)
+
+    def get_cell_at_pos(self, position):
+        return self.grid[position[0]][position[1]]
+
+    def explore_cell(self, position):
+        cell_at_pos = self.get_cell_at_pos(position)
+        cell_at_pos.explore()
 
     def can_move(self, target):
         row = target[0]
@@ -37,6 +45,7 @@ class mapArea:
             return False
         else:
             self.current_pos = target
+            self.explore_cell(target)
             return True
 
     def move_left(self):
