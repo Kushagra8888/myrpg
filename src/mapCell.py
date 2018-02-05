@@ -1,15 +1,15 @@
 class mapCell:
-    def __init__(self, row, col, enemy=False, explored=False):
+    def __init__(self, row, col, battle=False, explored=False):
         self.row = row
         self.col = col
-        self.enemy = enemy
+        self.battle = battle
         self.explored = explored
 
     def get_pos(self):
         return (self.row, self.col)
 
-    def enemy_present(self):
-        return self.enemy
+    def is_battle_cell(self):
+        return self.battle
 
     def is_explored(self):
         return self.explored

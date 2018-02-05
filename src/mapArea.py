@@ -1,5 +1,6 @@
 from src.mapCell import mapCell
 from src.moveHelper import *
+import random
 
 class mapArea:
     def __init__(
@@ -9,7 +10,8 @@ class mapArea:
              initial_pos=(0,0),
              unexplored_cell_char="?",
              explored_cell_char="_",
-             current_pos_char = "x"):
+             current_pos_char = "*",
+             battle_cell_density = 0.25):
         self.rows = rows
         self.cols = cols
         self.current_pos = initial_pos
@@ -17,14 +19,20 @@ class mapArea:
         self.explored_cell_char = explored_cell_char
         self.current_pos_char = current_pos_char
         self.grid = [];
+        self.battle_cell_density = battle_cell_density
         for row_idx in range(self.rows):
             self.grid.append([])
             for col_idx in range(self.rows):
-                self.grid[row_idx].append(mapCell(row_idx, col_idx, enemy=False, explored=False))
+                not_initial_pos = (row_idx, col_idx) != initial_pos
+                battle = not_initial_pos and random.random() < battle_cell_density
+                self.grid[row_idx].append(mapCell(row_idx, col_idx, battle=battle, explored=False))
         self.explore_cell(initial_pos)
 
     def get_cell_at_pos(self, position):
         return self.grid[position[0]][position[1]]
+
+    def get_current_cell(self):
+        return self.get_cell_at_pos(self.current_pos)
 
     def explore_cell(self, position):
         cell_at_pos = self.get_cell_at_pos(position)
@@ -40,7 +48,6 @@ class mapArea:
         return True
 
     def move(self, target):
-        print("moving to: ", target)
         if not self.can_move(target):
             return False
         else:
@@ -66,10 +73,10 @@ class mapArea:
             for col_idx in range(self.cols):
                 if ((row_idx, col_idx) == self.current_pos):
                     cell_char = self.current_pos_char
-                elif self.grid[row_idx][col_idx].enemy_present():
-                    cell_char = "!"
                 elif not self.grid[row_idx][col_idx].is_explored():
                     cell_char = "?"
+                elif self.grid[row_idx][col_idx].is_battle_cell():
+                    cell_char = "!"
                 else:
                     cell_char = "_"
                 str_repr = str_repr + cell_char + " "
